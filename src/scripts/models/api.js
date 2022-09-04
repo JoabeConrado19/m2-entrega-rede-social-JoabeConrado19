@@ -1,12 +1,12 @@
 
-export class Requests{
+export class Requests {
     static BaseUrl = "https://m2-rede-social.herokuapp.com/api"
     static token = localStorage.getItem("@kenzieRede:token")
     static UserId = localStorage.getItem("@kenzieRede:UserId")
     static PostsContainer = document.querySelector(".posts-container")
     static UserConteiner = document.querySelector(".user-info")
     static UserImg = document.querySelector(".img-container-create")
-    static UserIdPost = 0 
+    static UserIdPost = 0
     static SeguirId = 0
     static AsideContainer = document.querySelector(".asideCards")
     static headers = {
@@ -14,7 +14,7 @@ export class Requests{
         Authorization: `Token ${this.token}`
     }
     static Modal = document.querySelector(".modal-wrapper")
-    static async Login(body){
+    static async Login(body) {
         let Modal = document.querySelector(".ativador")
         let ModalClose = document.querySelector(".modal-close")
         const userLogin = await fetch(`${this.BaseUrl}/users/login/`, {
@@ -24,18 +24,18 @@ export class Requests{
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res)
+
                 if (res.token != undefined) {
                     localStorage.setItem("@kenzieRede:token", res.token)
                     localStorage.setItem("@kenzieRede:UserId", res.user_uuid)
                     window.location.assign("../src/pages/Homepage.html")
                 }
-                else{
+                else {
 
-                    ModalClose.addEventListener("click", ()=>{Modal.classList.remove("d-flex")})
+                    ModalClose.addEventListener("click", () => { Modal.classList.remove("d-flex") })
                     Modal.classList.add("d-flex")
-                   }
-            }).catch(err => console.log(err))
+                }
+            })
         return userLogin
     }
     static async criarUsuario(body) {
@@ -46,12 +46,12 @@ export class Requests{
         })
             .then(res => res.json())
             .then(res => {
-                if(res.username == body.username){window.location.assign("/index.html")}
+                if (res.username == body.username) { window.location.assign("/index.html") }
                 return res
             })
         return newUser
     }
-    static async ObterPosts (){
+    static async ObterPosts() {
         const newUser = await fetch(`https://m2-rede-social.herokuapp.com/api/posts/`, {
             method: 'GET',
             headers: this.headers,
@@ -85,8 +85,8 @@ export class Requests{
                     let div5 = document.createElement("div")
                     div5.classList.add("postBtns")
                     let button = document.createElement("button")
-                    button.addEventListener("click", ()=>{
-                        this.Modal.innerHTML= ""
+                    button.addEventListener("click", () => {
+                        this.Modal.innerHTML = ""
                         let div = document.createElement("div")
                         div.classList.add("modal")
                         let div2 = document.createElement("div")
@@ -97,7 +97,7 @@ export class Requests{
                         let p = document.createElement('p')
                         p.innerText = element.description
                         let button = document.createElement("button")
-                        button.addEventListener("click", ()=>{this.Modal.classList.toggle("d-flex")})
+                        button.addEventListener("click", () => { this.Modal.classList.toggle("d-flex") })
                         button.classList.add("modal-close")
                         button.innerText = "X"
                         let div3 = document.createElement("div")
@@ -116,45 +116,41 @@ export class Requests{
                         h3h.innerText = author.username
                         let ph = document.createElement("p")
                         ph.innerText = author.work_at
-
-
                         this.Modal.appendChild(div)
                         div.appendChild(div2)
-                        
-                        
                         div.appendChild(div3)
                         div3.appendChild(h3, p)
                         div2h.append(img1h, divh)
                         divh.append(h3h, ph)
-                        div3h.append( button)
+                        div3h.append(button)
                         div2.append(div2h, div3h)
-
                         this.Modal.classList.toggle("d-flex")
-
                     })
                     button.innerText = "Abrir Post"
                     let img2 = document.createElement("img")
                     img2.src = "../assets/heartBlack.png"
-                    img2.addEventListener("click", ()=>{
+                    img2.addEventListener("click", () => {
                         this.UserIdPost = element.uuid
-                        if(img2.getAttribute('src') == "../assets/heartBlack.png"){
-                        img2.src = "../assets/heartRed.png"
-                        likesQnt += 1
-                        p3.innerText = likesQnt}
-                        else{
+                        if (img2.getAttribute('src') == "../assets/heartBlack.png") {
+                            img2.src = "../assets/heartRed.png"
+                            likesQnt += 1
+                            p3.innerText = likesQnt
+                        }
+                        else {
                             img2.src = "../assets/heartBlack.png"
                             likesQnt -= 1
                             p3.innerText = likesQnt
 
                         }
                         this.LikeUnlike(this.UserIdPost)
-                        console.log(this.UserIdPost)
+                      
                     })
                     let p3 = document.createElement("p")
-                    if(likesQnt != 0){
-                    p3.innerText = likesQnt;}
-                    else{p3.innerText = "0"}
-                    
+                    if (likesQnt != 0) {
+                        p3.innerText = likesQnt;
+                    }
+                    else { p3.innerText = "0" }
+
                     this.PostsContainer.appendChild(li)
                     li.appendChild(div)
                     div.appendChild(div2)
@@ -169,26 +165,19 @@ export class Requests{
                     div5.appendChild(button)
                     div5.appendChild(img2)
                     div5.appendChild(p3)
-
-                    
                 });
-               
                 return res
             })
-
-
         return newUser
-
     }
-
-    static async UserUI(){
+    static async UserUI() {
         const newUser = await fetch(`${this.BaseUrl}/users/${this.UserId}/`, {
             method: 'GET',
             headers: this.headers,
         }).then(res => res.json())
-        .then(res => {
-            console.log(res.username)
-            let User = res
+            .then(res => {
+     
+                let User = res
                 let img = document.createElement("img")
                 img.src = res.image
                 let div = document.createElement("div")
@@ -205,65 +194,62 @@ export class Requests{
                 div.appendChild(p)
                 this.UserConteiner.appendChild(span)
                 this.UserImg.appendChild(img)
-
-
-        })
+            })
 
     }
 
-    static async AleatoryUser(){
+    static async AleatoryUser() {
         const newUser = await fetch(`${this.BaseUrl}/users/`, {
             method: 'GET',
             headers: this.headers,
         }).then(res => res.json())
-        .then(res => {
-            let i =  Math.floor(Math.random() * res.results.length);
-        let array = [];
-        array.push(res.results[i])
-        i =  Math.floor(Math.random() * res.results.length);
-        array.push(res.results[i])
-        i =  Math.floor(Math.random() * res.results.length);
-        array.push(res.results[i])
-        array.forEach(element => {
-            let li = document.createElement("li")
-            let div = document.createElement("div")
-            div.classList.add("aside-right-content")
-            let img = document.createElement("img")
-            img.src = element.image
-            let div2 = document.createElement("div")
-            let h2 = document.createElement("h2")
-            h2.innerText = element.username
-            let p = document.createElement("p")
-            p.innerText = element.work_at
-            let button = document.createElement("button")
-            button.classList.add("SeguirDesativo")
-            button.innerText = "Seguir"
-            button.addEventListener("click", ()=>{
-                button.classList.toggle("SeguirAtivo")
-                if(button.innerText != "Seguindo"){
-                    button.innerText = "Seguindo"
-                    this.SeguirId = element.uuid
-                    console.log(this.SeguirId)
-                    this.Follow(this.SeguirId)
-                }   
-                else if(button.innerText == "Seguindo"){
+            .then(res => {
+                let i = Math.floor(Math.random() * res.results.length);
+                let array = [];
+                array.push(res.results[i])
+                i = Math.floor(Math.random() * res.results.length);
+                array.push(res.results[i])
+                i = Math.floor(Math.random() * res.results.length);
+                array.push(res.results[i])
+                array.forEach(element => {
+                    let li = document.createElement("li")
+                    let div = document.createElement("div")
+                    div.classList.add("aside-right-content")
+                    let img = document.createElement("img")
+                    img.src = element.image
+                    let div2 = document.createElement("div")
+                    let h2 = document.createElement("h2")
+                    h2.innerText = element.username
+                    let p = document.createElement("p")
+                    p.innerText = element.work_at
+                    let button = document.createElement("button")
+                    button.classList.add("SeguirDesativo")
                     button.innerText = "Seguir"
-                }
-            })
-            this.AsideContainer.appendChild(li)
-            li.appendChild(div)
-            div.appendChild(img)
-            div.appendChild(div2)
-            div2.appendChild(h2)
-            div2.appendChild(p)
-            li.appendChild(button)
-            
-        });
-        })
-        
-    }
+                    button.addEventListener("click", () => {
+                        button.classList.toggle("SeguirAtivo")
+                        if (button.innerText != "Seguindo") {
+                            button.innerText = "Seguindo"
+                            this.SeguirId = element.uuid
+                        
+                            this.Follow(this.SeguirId)
+                        }
+                        else if (button.innerText == "Seguindo") {
+                            button.innerText = "Seguir"
+                        }
+                    })
+                    this.AsideContainer.appendChild(li)
+                    li.appendChild(div)
+                    div.appendChild(img)
+                    div.appendChild(div2)
+                    div2.appendChild(h2)
+                    div2.appendChild(p)
+                    li.appendChild(button)
 
-    static async CriarPost(body){
+                });
+            })
+
+    }
+    static async CriarPost(body) {
         const newUser = await fetch(`${this.BaseUrl}/posts/`, {
             method: 'POST',
             headers: this.headers,
@@ -271,9 +257,9 @@ export class Requests{
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res)
+             
                 this.ObterPosts()
-            
+
 
                 return res
             })
@@ -282,79 +268,56 @@ export class Requests{
         return newUser
     }
 
-    static async LikeUnlike (id){
-        
+    static async LikeUnlike(id) {
+
         const newUser = await fetch(`${this.BaseUrl}/likes/`, {
             method: 'POST',
             headers: this.headers,
-            body: JSON.stringify({ "post_uuid": id})
+            body: JSON.stringify({ "post_uuid": id })
         })
             .then(res => res.json())
             .then(res => {
+
+
                 
-                
-                console.log(res)
-                console.log(id)
+              
                 id = res.uuid
-                console.log(id)
-                
-                if(res.post_uuid =='You already liked this post.'){
+           
+
+                if (res.post_uuid == 'You already liked this post.') {
                     this.Unlike(id)
 
                 }
-               
-
-
-
-            
 
                 return res
             })
 
-
         return newUser
-
     }
-
-    static async Unlike(id){
+    static async Unlike(id) {
         const newUser = await fetch(`${this.BaseUrl}/likes/${id}/`, {
             method: 'DELETE',
             headers: this.headers,
         })
             .then(res => res.json())
             .then(res => {
-                console.log(id)
-                console.log(res)
-               
-
-
-
-            
-
+       
                 return res
             })
     }
-    static async Follow(id){
+    static async Follow(id) {
         const newUser = await fetch("https://m2-rede-social.herokuapp.com/api/users/follow/", {
             method: 'POST',
             headers: this.headers,
-            body: JSON.stringify({"following_users_uuid": id})
+            body: JSON.stringify({ "following_users_uuid": id })
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res)
-
-               
-
-
-
-            
-
+    
                 return res
             })
 
     }
-    
-    }
 
-   
+}
+

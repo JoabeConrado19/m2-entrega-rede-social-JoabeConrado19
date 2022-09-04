@@ -9,7 +9,6 @@ class Renderizar extends Requests{
         if (localStorage.getItem("@kenzieRede:token") != this.token || localStorage.getItem("@kenzieRede:token") == undefined) {
             localStorage.clear();
             window.location.assign("/index.html");
-
         }
 }
     static CriarPost(){
@@ -23,10 +22,7 @@ class Renderizar extends Requests{
         Requests.CriarPost(body)
         
     }
-
-
 }
-
 Renderizar.Redirecionando()
 Requests.ObterPosts()
 Requests.UserUI()
