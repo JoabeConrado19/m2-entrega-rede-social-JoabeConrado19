@@ -30,6 +30,7 @@ class Cadastro{
             "work_at": this.Trabalho,
             "image": this.ImgUrl
         }
+        console.log(bodyCadastro)
         Requests.criarUsuario(bodyCadastro)
     }
 }

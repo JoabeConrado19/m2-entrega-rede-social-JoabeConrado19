@@ -41,11 +41,12 @@ export class Requests {
     static async criarUsuario(body) {
         const newUser = await fetch(`${this.BaseUrl}/users/`, {
             method: 'POST',
-            headers: this.headers,
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body)
         })
             .then(res => res.json())
             .then(res => {
+                console.log(res)
                 if (res.username == body.username) { window.location.assign("/index.html") }
                 return res
             })
